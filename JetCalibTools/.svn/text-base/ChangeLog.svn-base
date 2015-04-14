@@ -1,0 +1,218 @@
+2015-03-01 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-30
+	* Simplified inheritance structure to be able to be handle by PyROOT
+
+2015-02-26 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-29
+	* MCJES included into the Prerecommendation configuration file
+
+2015-02-17 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-28
+	* Bug fix provided by Steve Alkire in the MCBasedOffset_Feb2015.config
+	  for the DC14 Residual
+
+2015-02-20 Attila Krasznahorkay <Attila.Krasznahorkay@cern.ch>
+	* Added some more exclusion rules in selection.xml to get rid
+	  of every last warning about duplicate dictionaries in
+	  AnalysisBase-2.1.X.
+	* Tagging as JetCalibTools-00-04-27
+
+2015-02-19  scott snyder  <snyder@bnl.gov>
+
+	* Tagging JetCalibTools-00-04-26.
+	* Fix clang warnings: remove unused class members.
+
+2015-02-17 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-25
+	* Modifications in Makefile.RootCore and selection.xml and the
+	inclusion of a new file JetCalibToolsDict.h in order to allow people to use the tool from a PyROOT
+
+2015-02-17 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-24
+	* Fixed the problem with tags 22 and 23 (DC14 Prerecommendation
+	configuration file not present)
+
+2015-02-15 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-23
+	* The DC14 Residual correction for AntiKt4EMJESTopo jets was added to the
+	prerecommendation configuration file to derive the MC JES
+
+2015-02-12 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-22
+	* Prerecommendation configuration file added with the DC14 Residual
+	correction for AntiKt4LCTopo jets to derive the MC JES
+
+2015-02-10 Jonathan Bossio <jbossios@cern.ch>
+	JetCalibTools-00-04-21
+	* Nsegments (# of muon segments) is now obtained from the GhostMuonSegmentCount
+	  jet attribute
+
+2015-01-07 Joe Taenzer <joseph.taenzer@cern.ch>
+        JetCalibTools-00-04-20
+	* Added calo GS corrections to trigger configs
+	* Cleaned up the jetarea/residual parts of the main init method
+
+2014-12-19  scott snyder  <snyder@bnl.gov>
+        * Tagging JetCalibTools-00-04-19.
+	* cmt/requirements: Fix cmt warnings.
+
+2014-12-08 Joe Taenzer <joseph.taenzer@cern.ch>
+        JetCalibTools-00-04-18 (release 20)
+        * OriginCorrected/PileupCorrected attributes are now ints
+	  trigger aux store doesn't allow bools :(
+
+2014-12-08 Joe Taenzer <joseph.taenzer@cern.ch>
+        JetCalibTools-00-04-17
+	* OriginCorrected and PileupCorrected attributes are set to false before calibration
+	  if they aren't already written to the jet
+
+2014-12-08 Joe Taenzer <joseph.taenzer@cern.ch>
+	JetCalibTools-00-04-16
+	* Reverted changes from tag 04-15 -- Origin removed from momentum state names
+	* Added new jet attributes: OriginCorrected, PileupCorrected
+	  Used to track if the origin and pileup corrections have been applied
+
+2014-12-03 Joe Taenzer <joseph.taenzer@cern.ch>
+        JetCalibTools-00-04-15
+	* Momentum states after the origin correction are stored with "Origin" in the name
+
+2014-12-03 Joe Taenzer <joseph.taenzer@cern.ch>
+        JetCalibTools-00-04-14
+	* Run1 style implementation of origin correction
+	* Added configs for final run 1 JES (Fullsim/data and AFII)
+	* Fixed a bug in the retrieval of GhostMuonSegment for the GSC
+	* Fixed requirements file for GSC factors root files
+
+2014-12-02 David Adams
+	* JetCalibTools-00-04-13
+	* ATLJETMET-129
+	* Root/JetPileupCorrection.cxx: Change area residual warning to
+	  verbose.
+
+2014-12-01 Joe Taenzer <joseph.taenzer@cern.ch>
+	JetCalibTools-00-04-12
+	* Added preliminary particle flow jet calibration
+
+2014-12-01 Joe Taenzer <joseph.taenzer@cern.ch>
+	JetCalibTools-00-04-11
+	* Modified Trigger config so that jet area subtraction can be performed
+	* Added NoPileup trigger config for applying the JES without the jet area subtraction
+
+2014-11-28 Joe Taenzer <joseph.taenzer@cern.ch>
+	JetCalibTools-00-04-10
+	* Added PFLOW jet scale
+	* Added rhoKey configurable property, used to retrieve rho from EventShape
+	  default rhoKey value is "auto", determines which rho to retrieve based on the jet scale
+
+2014-11-13 Joe Taenzer <joseph.taenzer@cern.ch>
+        JetCalibTools-00-04-09
+	* Return SUCCESS if EventObject, EventShape, or VertexContainer can't be retrieved (avoid fatals from ATH_CHECK)
+	* Default config directory prefix is now "JetCalibTools/CalibrationConfigs/"
+	  Allows users to pass only the config name without the path
+
+2014-11-11 Joe Taenzer <joseph.taenzer@cern.ch>
+        JetCalibTools-00-04-08
+        * Added a preliminary trigger config
+
+2014-11-04    <delsart@localhost>
+
+	* cmt/requirements: attempt to improve the installation of calib
+	files. Works when package is checked out...
+	* JetCalibTools-00-04-07
+
+
+2014-10-29 Joe Taenzer <joseph.taenzer@cern.ch>
+	JetCalibTools-00-04-06
+	* Fixed a mistake in the code preventing EventShape and VertexContainer from being
+	  retrieved if the jet area and/or residual offset corrections are not requested.
+
+2014-10-16  David Adams
+	JetCalibTools-00-04-05
+	See ATLJETMET-21
+	* Root/JetCalibrationTool.cxx: Update for new EventShape interface.
+
+2014-10-10    <delsart@localhost>
+	* JetCalibrationTool.cxx and all *cxx files : replaced FindFile by
+	PathResolverFindCalibFile.
+	* cmt/requirements and Makefile.RootCore adapted.
+	* run time not tested in RootCore !
+	* works with JetRec-02-04-04
+	* JetCalibTools-00-04-04
+
+2014-10-01 Joe Taenzer  <joseph.taenzer@cern.ch>
+	JetCalibTools-00-04-03
+	* Fixed the Changelog
+	* Added declareProperty statement for isData
+	* Added Moriond2013 AFII config
+	* Added most recent Rscan config
+	* All daughter classes now receive a unique name during initialization
+	* Low pT JES extrapolation migrated from the old tool 
+	(not relevant to Moriond2013 and older calibration)
+
+2014-09-24  David Adams
+	JetCalibTools-00-04-02
+	* JetPileupCorrection: Add some VERBOSE messages.
+	* JetCalibrationTool: Add some VERBOSE messages.
+
+2014-09-24  David Adams
+	* JetCalibrationToolBase: Add warning explaining which initial
+	  momentum state is not being found.
+
+2014-09-24  David Adams
+	JetCalibTools-00-04-01
+	* IJetCalibrationTool: Make interface methods public. Update doc.
+
+2014-09-19  David Adams
+	JetCalibTools-00-04-00
+	* ChangeLog: Reverse order so latest mesage is on top.
+	* cmt: Remove automatically-generated files.
+	* cmt/requirements: Add JetInterface.
+	* JetCalibrationToolBase: update friend for new calib tool name,
+	  add log message.
+	* JetPileupCorrection: Add warning for bad initial p4 state name.
+	* IJetCalibrationTool.h: Update comments for new calib tool name.
+	* JetCalibrationTool: Change class name to match file name, i.e.
+	  ApplyJetCalibration --> JetCalibrationTool.
+	  Add IJetModifier to the ASG tool inheritance macro.
+	* components/JetCalibTools_entries: Update for new calib tool name.
+
+2014-08-26 Joe Taenzer  <joseph.taenzer@cern.ch>
+	JetCalibTools-00-03-04
+	* Starting scale is now configurable from the text config file
+	* Added an MC14 config which should be run starting from the default jet P4 and the MC JES
+	* Methods called during analysis event loop (or reco) are now const
+	* Inheritance from IJetModifier added, re-implemented modify method which calibrates an xAOD::JetContainer
+	* Inheritance from ISingleJetModifier added, re-implemented modifyJet method which calibrates an xAOD::Jet
+	* JetEventInfo promoted to a class, now passed to calibrateImpl (to avoid setting private members in const methods)
+	* Removed some unused methods from the interface
+	* Hardcoded rho for EM jets is now 6 GeV
+
+2014-08-15 Joe Taenzer  <joseph.taenzer@cern.ch>
+	JetCalibTools-00-03-03
+	* Added xAODEventShape to the requirements file...
+
+2014-08-15 Joe Taenzer  <joseph.taenzer@cern.ch>
+	JetCalibTools-00-03-02
+	* The jet is now decorated with the calibrated 4momentum at each step in the calibration chain
+	* Each step in the calibration chain now retrieves the decorated 4mom from the previous step
+	* Fixed the issues with deleting pointers in the destructors
+	* Added some test code for xAODEventShape -- Note this will cause compile failures if xAODEventShape 
+	  is not checked out explicitly, since it isn't yet available in a release of athena or analysisBase
+
+2014-07-25 Joe Taenzer  <joseph.taenzer@cern.ch>
+	JetCalibTools-00-03-01
+	* Nsegments (# of muon segments) is now	retrieved from xAOD::MuonSegments
+	* Added detectorEta decoration for use in the JES, GSC, Insitu corrections
+	* Fixed	issue with deletes in some of the class destructors
+	* Added	inheritance from PATInterfaces/CorrectionTool 
+	* Added	correctedCopy and applyCorrection methods to conform with ASG recommendations
+
+2014-07-02 Joe Taenzer  <joseph.taenzer@cern.ch>
+	JetCalibTools-00-03-00
+	* First version of xAOD EDM compliant code
+	* Replaced JetAreaCorrection class with JetPileUpCorrection class, which applies both the jet area residual offset corrections
+	  This design change was necessary since by default the scale factor correcting the jet for pileup is derived from both corrections
+
+2013-06-18  Pierre-Antoine Delsart  <delsart@localhost.localdomain>
+	* Start rewriting the calib system, using a dual (Athena/Non
+	Athena) interface.

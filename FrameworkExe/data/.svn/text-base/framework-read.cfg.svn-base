@@ -1,0 +1,60 @@
+#
+# This is a ConfigStore file, please see CxAODTools/Root/ConfigStore.cxx for info.
+#
+
+#######################################################################
+#                                                                     #
+#                        Top level settings                           #
+#                                                                     #
+#######################################################################
+
+int maxEvents                 = 200 # -1 = all events
+
+# analysisType determines selection and histogram filling
+# 0 = 0 leptons, 1 = 1 lepton, 2 = 2 leptons
+# no check is being made currently if the CxAOD was created with the same selection
+int analysisType              = 2
+
+# COMEnergy for reading cross sections
+string COMEnergy              = 13TeV
+
+# input directory where the CxAODs are stored
+# HIGG5D1 = 0 leptons, HIGG5D2 = 1 lepton, HIGG2D4 = 2 leptons
+# Note that reading from EOS is MUCH slower than from AFS
+string dataset_dir            = /eos/atlas/atlasgroupdisk/phys-higgs/HSG5/Run2/VH/HIGG2D4_13TeV_p1784/CxAOD_00-07-00/
+#string dataset_dir            = /data/atlas/marchiori/VHbb_Run2/v00-07-00/HIGG2D4_13TeV_p1784/CxAOD_00-07-00/ # 0-lepton
+#string dataset_dir            = /data/atlas/marchiori/VHbb_Run2/v00-07-00/HIGG5D1_13TeV_p1784/CxAOD_00-07-00/ # 1-lepton
+#string dataset_dir            = /data/atlas/marchiori/VHbb_Run2/v00-07-00/HIGG5D2_13TeV_p1784/CxAOD_00-07-00/ # 2-lepton
+float luminosity              = 5.0 # in fb, for MC normalisation. Default if not specified = 0.001
+# string driver                 = proof # the event loop driver. Default if not specified = direct (interactive)
+
+
+#######################################################################
+#                                                                     #
+#                       CxAODReader settings                          #
+#                                                                     #
+#######################################################################
+
+# This is a ConfigStore file, please see ConfigStore.cxx for info.
+bool debug                    = true
+bool passThroughOR            = true
+
+string eventInfoContainer     = EventInfo
+string muonContainer          = Muons
+string electronContainer      = ElectronCollection
+string tauContainer           = TauRecContainer
+string photonContainer        = PhotonCollection
+string jetContainer           = AntiKt4LCTopoJets
+string fatJetContainer        = CamKt12LCTopoJets
+string METContainer           = MET_RefFinal
+string truthParticleContainer = TruthParticle
+string truthVertexContainer   = TruthVertex
+string ungroomedJetContainer  = AntiKt10LCTopoJets
+string groomedJetContainer    = AntiKt10LCTopoJets
+string trimmedJetContainer    = AntiKt10LCTopoJets
+
+# systematics
+bool nominalOnly = false
+bool autoDiscoverVariations = true
+vector<string> variations     = EG_SCALE_ALL MUONS_SCALE MUONS_ID MUONS_MS
+vector<string> variationsSymm = JetEResol

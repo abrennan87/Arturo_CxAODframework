@@ -1,0 +1,211 @@
+// dear emacs, this is -*- C++ -*-
+#include "xAODEgamma/Electron.h"
+#include "xAODMuon/Muon.h"
+#include "xAODJet/Jet.h"
+#include "xAODEventInfo/EventInfo.h"
+//
+#include <utility>
+//#include "VHbbEvtSelection.h"
+
+//defined in VHbbEvtSelection.icc, no need for redifinition here
+/*
+static bool sort_pt(const xAOD::Jet* jetA, const xAOD::Jet* jetB) {
+  return jetA->pt() > jetB->pt();
+}
+*/
+
+
+template<typename T>
+VBFHbbEvtSelection<T>::VBFHbbEvtSelection() noexcept :
+EventSelection(),
+  m_result()
+{}
+
+
+// to be implemented here
+template<typename T>
+bool VBFHbbEvtSelection<T>::passJetSelection(const xAOD::JetContainer* jets) {
+  // assume that T has a field vector<Jet*> jets
+  m_result.jets.clear();
+  // look at signal jets, veto jets
+  // if pass VH jets selection fill T.jets and return true
+  // fill T.jets in decreasing pT order
+  // else return false
+
+  // Similar to pre-selection but explicit one jet cuts to mimic derivation (>100 GeV)
+  int njets(0);
+  int nsigjets(0);
+  //bool hasHighPtJet(false);
+  for (unsigned int iJet(0) ; iJet < jets->size(); ++iJet) {
+    const xAOD::Jet * jet = jets->at(iJet);
+    if (!m_decorator.get(jet,JetIntProps::passOR)) continue; 
+    if (m_decorator.get(jet,JetIntProps::isVBFJet)){ // applied to keep CxAOD jets already
+      njets++;
+      if (m_decorator.get(jet,JetIntProps::isSignalJet)) // pt>20 GeV, |eta|<2.5
+	nsigjets++;
+      
+      m_result.jets.push_back(jet);
+    }//isVBFJets
+  }//passOR
+  // Jets appear to be pt ordered but just in case
+  std::sort(m_result.jets.begin(), m_result.jets.end(), sort_pt);
+
+  // take >1 jet and 1 jet events with jetpt>100 GeV
+  return (njets>3 && nsigjets>1) ? true : false;
+  
+}
+
+template<typename T>
+int VBFHbbEvtSelection<T>::doVBFPhotonSelection(const xAOD::PhotonContainer* photons,
+						const xAOD::Photon*& ph){
+  //one function for consistency between standard VBF and VBF+gamma channels
+
+  //return 1 if we found a signal photon
+  //return 0 if no signal photons
+
+  //for now, just return pre-selection
+  return doVBFPhotonPreSelection(photons, ph);
+
+}
+
+template<typename T>
+bool VBFHbbEvtSelection<T>::passSelection(const xAOD::EventInfo* evtinfo,
+					  const xAOD::MissingET* met,
+					  const xAOD::ElectronContainer* electrons,
+					  const xAOD::PhotonContainer* photons,
+					  const xAOD::MuonContainer* muons,
+					  const xAOD::TauJetContainer* taus,
+					  const xAOD::JetContainer* jets) {
+
+  // assume that T has a field bool pass
+  clearResult();
+  if(! passJetSelection(jets)) {
+    m_result.pass = false;
+    return false;
+  }
+  
+  if(! passPhotonSelection(photons)) {
+    m_result.pass = false;
+    return false;
+  }
+  
+  if(! passKinematics()) {
+    m_result.pass = false;
+    return false;
+  }
+  m_result.pass = true;
+  return true;
+
+}
+
+
+// Pre-selection versions
+template<typename T>
+bool VBFHbbEvtSelection<T>::passJetPreSelection(const xAOD::JetContainer* jets) {
+  // assume that T has a field vector<Jet*> jets
+  m_result.jets.clear();
+  // look at signal jets, veto jets
+  // if pass VH jets selection fill T.jets and return true
+  // fill T.jets in decreasing pT order
+  // else return false
+  int njets(0);
+  for (unsigned int iJet(0) ; iJet < jets->size(); ++iJet) {
+    const xAOD::Jet * jet = jets->at(iJet);
+    if (!m_decorator.get(jet,JetIntProps::passOR)) continue; 
+    if (m_decorator.get(jet,JetIntProps::isVBFJet)) { // applied to keep CxAOD jets already
+      njets++;
+      m_result.jets.push_back(jet);
+    }
+  }
+  // Jets appear to be pt ordered but just in case
+  std::sort(m_result.jets.begin(), m_result.jets.end(), sort_pt);
+
+  //not sure if we want to do the exact same thing here as we do in pass jet selection
+  return (njets>=4) ? true : false;
+
+}
+
+template<typename T>
+int VBFHbbEvtSelection<T>::doVBFPhotonPreSelection(const xAOD::PhotonContainer* photons,
+						   const xAOD::Photon*& ph){
+  //one function for consistency between standard VBF and VBF+gamma channels
+
+  //return 1 if we found a signal photon
+  //return 0 if no signal photons
+
+  ph = nullptr;
+
+  int nph=0;
+  int nsigph=0;
+  
+  for (unsigned int iPh=0; iPh<photons->size(); ++iPh){
+    const xAOD::Photon* phot = photons->at(iPh);
+    if(!m_decorator.get(phot, PhotIntProps::passOR)) continue;
+    if( m_decorator.get(phot, PhotIntProps::isVBFLoosePhoton)){
+      nph++;
+      if(ph==0)
+	ph=phot;
+    }
+    if (m_decorator.get(phot,PhotIntProps::isVBFSignalPhoton)) nsigph++;
+  }
+  // todo : veto on more than one photon?
+  if(nph==1 && nsigph==1)
+    return 1;
+  if(nsigph==0)
+    return 0;
+
+  return -1;
+}
+
+template<typename T>
+bool VBFHbbEvtSelection<T>::passPreSelection(const xAOD::EventInfo* evtinfo,
+					  const xAOD::MissingET* met,
+					  const xAOD::ElectronContainer* electrons,
+					  const xAOD::PhotonContainer* photons,
+					  const xAOD::MuonContainer* muons,
+					     const xAOD::TauJetContainer* taus,
+					     const xAOD::JetContainer* jets,
+					     const xAOD::JetContainer* fatjets) {
+  // assume that T has a field bool pass
+  clearResult();
+
+  // event cleaning
+  bool passEventCleaning = true;
+  bool isMC = m_decorator.get(evtinfo, EventInfoIntProps::isMC);
+  passEventCleaning &= m_decorator.get(evtinfo, EventInfoIntProps::hasPV);
+  if (!isMC) {
+    passEventCleaning &= m_decorator.get(evtinfo, EventInfoIntProps::passGRL);
+    passEventCleaning &= m_decorator.get(evtinfo, EventInfoIntProps::isCleanEvent);
+  }
+  
+  // photons
+  
+  if(! passPhotonPreSelection(photons)) {
+    m_result.pass = false;
+    return false;
+  }
+  
+  // jets
+  if(! passJetPreSelection(jets)) {
+    m_result.pass = false;
+    return false;
+  }
+  // Trigger to be implemented
+  // if(! passTriggerPreSelection()) {
+  //  m_result.pass = false;
+  //  return false;
+  //  }
+  m_result.pass = true;
+  return true;
+
+}
+
+//
+template<typename T>
+bool VBFHbbEvtSelection<T>::passKinematics() {
+  return true;
+}
+
+template<typename T>
+void VBFHbbEvtSelection<T>::clearResult() {
+}

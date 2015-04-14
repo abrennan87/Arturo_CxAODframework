@@ -1,0 +1,9 @@
+{ decls }
+namespace Root {  }
+
+[ libElectronEfficiencyCorrection_Reflex.so ]
+# List of selected classes
+class AsgElectronEfficiencyCorrectionTool
+class Root::TElectronEfficiencyCorrectionTool
+header ElectronEfficiencyCorrection/AsgElectronEfficiencyCorrectionTool.h
+header ElectronEfficiencyCorrection/TElectronEfficiencyCorrectionTool.h

@@ -1,0 +1,21 @@
+#
+#  Offset and residual offset (after jet areas) calibration factors
+#    From Steve Alkire, Feb 11, 2015
+#
+#  
+#  
+#
+########
+
+# ----------------
+# Residual offset calibration factors
+
+ResidualOffsetDC14Feb2015.Description:        Residual 2015 mu- and N_{PV}-dependent jet pileup corrections
+
+ResidualOffsetDC14Feb2015.AbsEtaBins:         0 1.2 2.1 2.8 6.0
+
+ResidualOffsetDC14Feb2015.NPVTerm.AntiKt4LCTopo:     	-0.027 0.099 0.04 0.31 -0.137
+ResidualOffsetDC14Feb2015.MuTerm.AntiKt4LCTopo:   	 -0.039 -0.003 -0.123 -0.446 -0.015
+
+ResidualOffsetDC14Feb2015.NPVTerm.AntiKt4TopoEM:     0.032 0.042 0.026 0.27 -0.015
+ResidualOffsetDC14Feb2015.MuTerm.AntiKt4TopoEM:   	 -0.006 -0.005 -0.083 -0.246 -0.080

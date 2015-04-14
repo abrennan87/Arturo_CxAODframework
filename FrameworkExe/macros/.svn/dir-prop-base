@@ -1,0 +1,11 @@
+K 10
+svn:ignore
+V 4
+*.d
+
+K 13
+svn:mergeinfo
+V 223
+/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/FrameworkExe/devbranches/djamin/macros:649511-649514,649539-649540
+/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/FrameworkExe/devbranches/kristian/macros:649209-649420
+END

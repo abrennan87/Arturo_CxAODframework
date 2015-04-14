@@ -1,0 +1,40 @@
+10
+
+dir
+660370
+svn+ssh://svn.cern.ch/reps/atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/CxAODMaker/devbranches/arturos/tags/arturos-00-08-00-03
+svn+ssh://svn.cern.ch/reps/atlasoff
+
+
+
+2015-04-01T18:07:19.138066Z
+658541
+arturos
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+4525493e-7705-40b1-a816-d608a930855b
+
+Root
+dir
+
+cmt
+dir
+
+data
+dir
+
+CxAODMaker
+dir
+

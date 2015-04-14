@@ -1,0 +1,8 @@
+# come back to initial grid setup
+sed -i 's/voms-proxy-init -voms atlas:\/atlas\/phys-higgs\/Role=production/voms-proxy-init -voms atlas/g' FrameworkExe/scripts/setup_grid.txt
+# change user name
+sed -i 's/group.phys-higgs/user.%nickname%/g' FrameworkExe/util/hsg5framework.cxx
+# use proper options
+sed -i '/--official/d' FrameworkExe/util/hsg5framework.cxx
+# compile
+rc compile

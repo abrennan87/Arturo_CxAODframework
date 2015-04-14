@@ -1,0 +1,228 @@
+#ifndef CxAODReader_AnalysisReader_H
+#define CxAODReader_AnalysisReader_H
+
+#include <EventLoop/Algorithm.h>
+
+// Infrastructure include(s):
+#include "xAODRootAccess/Init.h"
+#include "xAODRootAccess/TEvent.h"
+
+#ifndef __MAKECINT__
+#include "CxAODTools/SuperDecorator.h"
+#include "CxAODTools/VHbb0lepEvtSelection.h"
+#include "CxAODTools/VHbb1lepEvtSelection.h"
+#include "CxAODTools/VHbb2lepEvtSelection.h"
+#include "CxAODTools/VBFHbb0phEvtSelection.h"
+#include "CxAODTools/VBFHbb1phEvtSelection.h"
+#include "CxAODTools/OverlapRemoval.h"
+#include "CxAODTools/XSectionProvider.h"
+#include "CxAODTools/sumOfWeightsProvider.h"
+#include "CxAODTools/ReturnCheck.h"
+#include "CxAODReader/HistSvc.h"
+#endif // not __MAKECINT__
+
+#include "CxAODTools/ConfigStore.h"
+
+#include <TH1F.h>
+#include <TH1D.h>
+
+#include "CxAODReader/ObjectReader.h"
+
+namespace xAOD {
+#ifndef XAODJET_JET_H 
+  class Jet;
+#endif
+}
+
+class AnalysisReader : public EL::Algorithm
+{
+
+protected:
+
+  xAOD::TEvent *m_event;  //!
+
+  enum Type {e0Lep, e1Lep, e2Lep, VBF0ph, VBF1ph, monoWZH};			// monoWZH added AB (14/4/15)
+
+  virtual EL::StatusCode initializeEvent();
+  virtual EL::StatusCode initializeReader();
+  virtual EL::StatusCode initializeSelection();
+  virtual EL::StatusCode initializeIsMC();
+  virtual EL::StatusCode initializeXSections();
+  virtual EL::StatusCode initializeSumOfWeights();
+  virtual EL::StatusCode initializeVariations();
+
+  // variables that don't get filled at submission time should be
+  // protected from being send from the submission node to the worker
+  // node (done by the //!)
+public:
+  // Tree *myTree; //!
+  // TH1 *myHist; //!
+
+
+
+  // this is a standard constructor
+  AnalysisReader ();
+
+  // these are the functions inherited from Algorithm
+  virtual EL::StatusCode setupJob (EL::Job& job);
+  virtual EL::StatusCode fileExecute ();
+  virtual EL::StatusCode histInitialize ();
+  virtual EL::StatusCode changeInput (bool firstFile);
+  virtual EL::StatusCode initialize ();
+  virtual EL::StatusCode execute ();
+  virtual EL::StatusCode postExecute ();
+  virtual EL::StatusCode finalize ();
+  virtual EL::StatusCode histFinalize ();
+
+  void SetAnalysisType(int analysistype) {m_analysisType=analysistype;}
+  int GetAnalysisType() {return m_analysisType;}
+
+  void SetCOMEnergy(TString com) {m_comEnergy=com;}
+  void SetLuminosity(float lumi) {m_luminosity=lumi;}
+
+  void setConfig(std::string configPath) { m_configPath = configPath; }
+
+ private:
+   
+   std::vector<ObjectReaderBase*> m_objectReader; //!
+   
+   ObjectReader<xAOD::EventInfo>* m_eventInfoReader; //!
+   ObjectReader<xAOD::MissingETContainer>* m_METReader; //!
+   ObjectReader<xAOD::ElectronContainer>* m_electronReader; //!
+   ObjectReader<xAOD::PhotonContainer>* m_photonReader; //!
+   ObjectReader<xAOD::MuonContainer>* m_muonReader; //!
+   ObjectReader<xAOD::TauJetContainer>* m_tauReader; //!
+   ObjectReader<xAOD::JetContainer>* m_jetReader; //!
+   ObjectReader<xAOD::JetContainer>* m_fatJetReader; //!
+   ObjectReader<xAOD::TruthParticleContainer>* m_truthParticleReader; //!
+   
+#ifndef __MAKECINT__
+   template <class containerType>
+   ObjectReader< containerType >* registerReader(std::string name);
+#endif // not __MAKECINT__
+   
+  EL::StatusCode histInitialize_VBF1ph();
+  EL::StatusCode histInitialize_monoWZH();		// added AB
+  EL::StatusCode fill_nJetHistos(std::vector<const xAOD::Jet*> jets, string jetType);
+  EL::StatusCode fill_jetHistos(
+        std::vector<const xAOD::Jet*> signalJets,
+        std::vector<const xAOD::Jet*> forwardJets);
+  EL::StatusCode fill_0Lep();
+  EL::StatusCode fill_1Lep();
+  EL::StatusCode fill_2Lep(TString sysname);
+  EL::StatusCode fill_VBF0ph();
+  EL::StatusCode fill_VBF1ph();
+  EL::StatusCode fill_monoWZH();			// added AB
+  
+  EL::StatusCode bTaggerHists(int bookfill, const xAOD::Jet *jet=0);
+
+  EL::StatusCode CutFlowHist(std::string dir, std::string label, double weight);
+
+
+  EL::StatusCode OverlapPassThrough(const xAOD::ElectronContainer* electrons, 
+				    const xAOD::PhotonContainer* photons,	
+				    const xAOD::MuonContainer* muons,		
+				    const xAOD::TauJetContainer* taus,
+				    const xAOD::JetContainer* jets);
+ 
+  int m_analysisType;
+  int m_eventCounter; //!
+  bool m_isMC; //!
+  double m_weight; //!
+  double m_sumOfWeights; //!  correct for the luminosity of the MC file
+  TString m_comEnergy; 
+  float m_luminosity; // for rescaling the MC to a particular value of the luminosity (default is 1 pb-1)
+  bool m_isSherpaVJets; // is Sherpa file
+  bool m_isSherpaPt0WJets; //! is present sample SherpaWJets Pt0
+  bool m_isSherpaPt0ZJets; //! is present sample SherpaZJets Pt0
+  float m_SherpaPt0WJetsCut; //! cut W Pt0 events overlapping with other PtV slices
+  float m_SherpaPt0ZJetsCut; //! cut Z Pt0 events overlapping with other PtV slices
+
+  // lepton flavour of event
+  bool m_isE; //!
+  bool m_isMu; //!
+
+  ConfigStore * m_config; //!
+  std::string m_configPath;
+
+  bool m_debug; //!
+  bool m_nominalOnly; //!
+  bool m_autoDiscoverVariations; //!
+  std::vector<std::string> m_variations; //!
+  bool m_passThroughOR; //!
+
+  bool m_isNotInFile;//! for doing fixes :-(
+
+#ifndef __MAKECINT__
+  HistSvc* m_histSvc; //!
+  HistNameSvc* m_histNameSvc; //!
+#endif // not __MAKECINT_
+
+  // general histograms
+  TH1F* m_hist_VPtTruth; //!
+  
+  // b-tagging histograms. Maps and TStrings are flavour of the month
+  std::map<TString, TH1F*> m_hist_taggers; //!
+
+  TH1D* m_hist_1ph_CutFlow; //!
+  TH1D* m_hist_1ph_CutFlow_noWght; //!
+
+  //monoWZH hists						// added AB (14/4/15)
+  // before pre-selection
+  TH1F* m_hist_mono_prepre_fatjetm; //!
+  TH1F* m_hist_mono_prepre_fatjetpt; //! 
+  //pre-selection
+  TH1F* m_hist_mono_pre_MET; //!
+  TH1F* m_hist_mono_pre_METPhi; //!
+  TH1F* m_hist_mono_pre_Nfatjet; //!
+  TH1F* m_hist_mono_pre_fatjetm; //!
+  TH1F* m_hist_mono_pre_fatjetpt; //! 
+  TH1F* m_hist_mono_pre_fatjeteta; //! 
+  TH1F* m_hist_mono_pre_jetm; //!
+  TH1F* m_hist_mono_pre_jetpt; //!
+  TH1F* m_hist_mono_pre_jeteta; //!
+  //cutflow
+  TH1D* m_hist_mono_cutflow; //!
+  TH1F* m_hist_mono_cutflow_noweight; //!
+  TH1F* m_hist_mono_cutflow_met250_MET; //!
+  TH1F* m_hist_mono_cutflow_met350_MET; //!
+  TH1F* m_hist_mono_cutflow_fjet_MET; //!
+  TH1F* m_hist_mono_cutflow_lepveto_MET; //!
+  TH1F* m_hist_mono_cutflow_photveto_MET; //!
+  TH1F* m_hist_mono_cutflow_jetveto_MET; //!
+  TH1F* m_hist_mono_cutflow_metjetOL_MET; //!
+  TH1F* m_hist_mono_cutflow_met_MET; //!
+  TH1F* m_hist_mono_cutflow_mj_MET; //!
+  TH1F* m_hist_mono_cutflow_Nsigfjet; //!
+  TH1F* m_hist_mono_cutflow_fjetaddjetDeltaR; //!
+    //monoWZH n-1
+  TH1F* m_hist_nminusone_met250; //!
+  TH1F* m_hist_nminusone_met350; //!
+  TH1F* m_hist_nminusone_fjet; //!
+  TH1F* m_hist_nminusone_lepveto; //!
+  TH1F* m_hist_nminusone_photveto; //!
+  TH1F* m_hist_nminusone_jetveto; //!
+  TH1F* m_hist_nminusone_metjetOL; //!
+  TH1F* m_hist_nminusone_met500; //!
+  TH1F* m_hist_nminusone_mj; //!
+  TH1F* m_hist_mono_eff_MET; //!
+
+
+
+#ifndef __MAKECINT__
+  SuperDecorator m_superDecorator;//!
+  OverlapRemoval* m_overlapRemoval; //!
+  EventSelection* m_eventSelection;//!
+  XSectionProvider* m_xSection; //!
+  sumOfWeightsProvider* m_sumOfWeights_fix; //!
+#endif // not __MAKECINT_
+
+  // this is needed to distribute the algorithm to the workers
+  ClassDef(AnalysisReader, 1);
+};
+
+#ifndef __MAKECINT__
+#include "CxAODReader/AnalysisReader.icc"
+#endif // not __MAKECINT__
+
+#endif

@@ -1,0 +1,10 @@
+# change grid role
+sed -i 's/voms-proxy-init -voms atlas/voms-proxy-init -voms atlas:\/atlas\/phys-higgs\/Role=production/g' FrameworkExe/scripts/setup_grid.txt
+# change user name
+sed -i 's/user.%nickname%/group.phys-higgs/g' FrameworkExe/util/hsg5framework.cxx
+# use proper options
+sed -i 's/output job name/output job name\n    driver.options()->setString(EL::Job::optSubmitFlags, "--official");/g' FrameworkExe/util/hsg5framework.cxx
+# setups
+source FrameworkExe/scripts/setup_grid.txt
+# compile
+rc compile

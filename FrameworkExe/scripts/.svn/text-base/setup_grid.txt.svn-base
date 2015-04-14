@@ -1,0 +1,5 @@
+setupATLAS
+localSetupDQ2Client
+voms-proxy-init -voms atlas
+localSetupPandaClient --noAthenaCheck
+rcSetup

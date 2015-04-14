@@ -1,0 +1,9 @@
+atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/CxAODMaker/trunk
+atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/CxAODMaker_VHbb/trunk
+atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/CxAODTools/trunk
+atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/CxAODReader/trunk
+atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/FrameworkExe/trunk
+atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/TupleMaker/trunk
+atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/TupleReader/trunk
+
+atlasoff/Reconstruction/Jet/JetCalibTools/tags/JetCalibTools-00-04-30

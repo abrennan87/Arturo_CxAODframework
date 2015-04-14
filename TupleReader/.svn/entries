@@ -1,0 +1,77 @@
+10
+
+dir
+660370
+svn+ssh://svn.cern.ch/reps/atlasoff/PhysicsAnalysis/HiggsPhys/Run2/Hbb/CxAODFramework/TupleReader/tags/TupleReader-00-00-05
+svn+ssh://svn.cern.ch/reps/atlasoff
+
+
+
+2015-03-02T21:16:36.777268Z
+651041
+haysjm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4525493e-7705-40b1-a816-d608a930855b
+
+Root
+dir
+
+cmt
+dir
+
+scripts
+dir
+
+src
+dir
+
+README.txt
+file
+
+
+
+
+2015-04-14T02:07:19.000000Z
+a23c3eb1efae34cd74c82bef60eca022
+2015-02-16T11:13:17.731652Z
+647107
+alibrari
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+389
+
+TupleReader
+dir
+

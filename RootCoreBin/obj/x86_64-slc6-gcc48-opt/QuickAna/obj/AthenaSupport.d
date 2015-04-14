@@ -1,0 +1,1 @@
+/afs/cern.ch/user/a/abrennan/testarea/CxAODTestFramework/RootCoreBin/obj/x86_64-slc6-gcc48-opt/QuickAna/obj/AthenaSupport.o /afs/cern.ch/user/a/abrennan/testarea/CxAODTestFramework/RootCoreBin/obj/x86_64-slc6-gcc48-opt/QuickAna/obj/AthenaSupport.d : /cvmfs/atlas.cern.ch/repo/sw/ASG/AnalysisBase/2.1.29/QuickAna/Root/AthenaSupport.cxx
